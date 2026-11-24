@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 10 Study Hub | Subject, PPT, PDF & Reminder Organizer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .progress-fill {
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Top Header matching earlier layout -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 py-4 space-y-3">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs shrink-0">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Grade 10 Study Hub</h1>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <span id="sectionBadge" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-blue-700 border border-slate-200 shadow-2xs">
+          <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span>Section: St. Dominic</span>
+        </span>
+
+        <span id="roleBadge" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-700 border border-slate-200 shadow-2xs">
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          </svg>
+          <span>Student (View-Only)</span>
+        </span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 pt-0.5">
+        <button type="button" onclick="openLoginModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+          </svg>
+          <span>Switch Section / Role</span>
+        </button>
+
+        <button type="button" id="backupBtn" onclick="openBackupModal()" class="hidden px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-semibold cursor-pointer">
+          Backup / Share JSON
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Amber Notice Banner matching earlier layout -->
+  <section id="roleBanner" class="bg-amber-50/90 border-b border-amber-200">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-start gap-3">
+      <div class="text-amber-700 mt-0.5 shrink-0">
+        <svg id="bannerLockIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </div>
+      <div class="text-center flex-1 space-y-1.5">
+        <p id="bannerText" class="text-xs sm:text-sm text-amber-950 leading-relaxed">
+          <strong class="font-bold">Student View-Only Mode:</strong> You can view lessons, PPTs, and PDFs, and check off your personal study checklist. Only the <strong class="font-bold">Section Officer / Admin</strong> can add, edit, or remove official content.
+        </p>
+        <div id="quickOfficerWrap">
+          <button type="button" id="quickOfficerBtn" onclick="openLoginModal()" class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-blue-700 hover:text-blue-900 underline underline-offset-2 cursor-pointer">
+            <span>Officer Login</span>
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-5 space-y-5">
+
+    <!-- SUBJECTS Card matching earlier layout -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 text-blue-600">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+          </svg>
+          <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">SUBJECTS</h2>
+        </div>
+
+        <button type="button" id="addSubjectBtn" onclick="openAddSubjectModal()" class="hidden px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold cursor-pointer">
+          + Add Subject
+        </button>
+      </div>
+
+      <div id="subjectList" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- Grid for Lessons + Reminders + Progress -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <!-- Active Subject Lessons, PPTs & PDFs -->
+      <section class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="activeSubjectIcon" class="text-lg">📐</span>
+              <h2 id="activeSubjectTitle" class="text-base sm:text-lg font-extrabold text-slate-900">Mathematics</h2>
+            </div>
+            <p id="activeSubjectMeta" class="text-xs text-slate-500 mt-0.5">0 of 0 lessons reviewed</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="button" id="addTopicBtn" onclick="toggleAddTopicForm()" class="hidden px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold cursor-pointer">
+              + Add Lesson
+            </button>
+            <button type="button" id="deleteSubjectBtn" onclick="deleteCurrentSubject()" class="hidden px-2.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold cursor-pointer">
+              Delete Subject
+            </button>
+          </div>
+        </div>
+
+        <!-- Officer Add Lesson Form -->
+        <form id="addTopicForm" onsubmit="handleAddTopic(event)" class="hidden p-4 bg-blue-50/60 border-b border-blue-100 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-blue-800">New Lesson / Topic</span>
+            <button type="button" onclick="toggleAddTopicForm()" class="text-xs text-slate-500 hover:text-slate-800 cursor-pointer">Cancel</button>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Lesson Title</label>
+            <input type="text" id="newTopicTitle" required placeholder="e.g., Quadratic Functions &amp; Graphs" class="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-xl">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Quick Study Notes / Formulas</label>
+            <textarea id="newTopicNotes" rows="2" placeholder="Key takeaways, formulas, or reviewer pointers..." class="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-xl"></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button type="submit" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold cursor-pointer">
+              Save Lesson
+            </button>
+          </div>
+        </form>
+
+        <div id="topicsContainer" class="divide-y divide-slate-100">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- Right Column: Reminders & Progress -->
+      <aside class="lg:col-span-4 space-y-5">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-600">My Review Progress</h2>
+            <span id="overallProgressLabel" class="text-sm font-bold text-blue-600">0%</span>
+          </div>
+          <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+            <div id="overallProgressBar" class="h-full bg-blue-600 rounded-full progress-fill" style="width: 0%"></div>
+          </div>
+          <p id="overallProgressSub" class="text-xs text-slate-500">0 of 0 topics reviewed across subjects</p>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+            <div>
+              <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-600">Reminders &amp; Deadlines</h2>
+              <p class="text-xs text-slate-400">Quizzes, projects &amp; tasks</p>
+            </div>
+            <button type="button" id="addReminderBtn" onclick="toggleAddReminderForm()" class="hidden px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold cursor-pointer">
+              + Add
+            </button>
+          </div>
+
+          <form id="addReminderForm" onsubmit="handleAddReminder(event)" class="hidden p-4 bg-amber-50/70 border-b border-amber-100 space-y-2.5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Task / Reminder Title</label>
+              <input type="text" id="reminderTitle" required placeholder="e.g., Chapter 2 Long Quiz" class="w-full px-3 py-1.5 text-sm bg-white border border-slate-300 rounded-xl">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Subject</label>
+                <select id="reminderSubject" class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl"></select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Due Date</label>
+                <input type="date" id="reminderDate" required class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-xl">
+              </div>
+            </div>
+            <button type="submit" class="w-full py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold cursor-pointer">
+              Add Reminder
+            </button>
+          </form>
+
+          <div id="remindersList" class="p-4 space-y-2.5">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- 1. Section & Role Login Modal -->
+  <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-blue-600 text-white flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold">Section &amp; Role Access</h3>
+          <p class="text-xs text-blue-100">Choose your section and sign-in mode</p>
+        </div>
+        <button type="button" onclick="closeLoginModal()" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 flex items-center justify-center font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Grade 10 Section</label>
+          <select id="sectionSelect" onchange="handleSectionSelectChange()" class="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-xl bg-white"></select>
+        </div>
+
+        <div id="customSectionBox" class="hidden space-y-2 p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <label class="block text-xs font-semibold text-slate-700">New Section Name</label>
+          <input type="text" id="customSectionName" placeholder="e.g., St. Lorenzo" class="w-full px-3 py-1.5 text-sm border border-slate-300 rounded-xl bg-white">
+        </div>
+
+        <div class="pt-1 border-t border-slate-100 space-y-2.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Section Officer PIN (Admin Only)</label>
+          <input type="password" id="officerPinInput" placeholder="Enter Officer PIN (Default: 1026)" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl">
+          <p id="loginErrorMsg" class="hidden text-xs font-semibold text-rose-600"></p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+          <button type="button" onclick="loginAsStudent()" class="w-full py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 text-sm font-semibold cursor-pointer">
+            Enter as Student
+          </button>
+          <button type="button" onclick="loginAsOfficer()" class="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold cursor-pointer">
+            Officer Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Add Subject Modal -->
+  <div id="addSubjectModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full border border-slate-200 overflow-hidden">
+      <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <h3 class="text-base font-bold">Add Subject</h3>
+        <button type="button" onclick="closeAddSubjectModal()" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 flex items-center justify-center font-bold cursor-pointer">✕</button>
+      </div>
+      <form onsubmit="handleAddSubject(event)" class="p-5 space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Subject Name</label>
+          <input type="text" id="newSubjectName" required placeholder="e.g., Research / ICT" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Icon / Emoji</label>
+          <input type="text" id="newSubjectIcon" value="📘" maxlength="4" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeAddSubjectModal()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white cursor-pointer">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Per-Lesson PPT Modal -->
+  <div id="pptModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full border border-slate-200 overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-5 py-4 bg-orange-600 text-white flex items-center justify-between">
+        <div>
+          <span class="text-[11px] uppercase tracking-wider text-orange-100 font-semibold">Lesson Presentation</span>
+          <h3 id="pptModalTitle" class="text-base sm:text-lg font-bold">Lesson Slides</h3>
+        </div>
+        <button type="button" onclick="closePptModal()" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 flex items-center justify-center font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 flex-1">
+        <div id="pptSlidesView" class="hidden space-y-3">
+          <div class="bg-slate-900 text-white rounded-2xl p-6 min-h-[210px] flex flex-col justify-between">
+            <div>
+              <span id="pptSlideCounter" class="text-xs font-semibold uppercase tracking-wider text-orange-300">Slide 1 of 1</span>
+              <h4 id="pptSlideHeading" class="text-xl font-bold mt-2">Slide Title</h4>
+              <p id="pptSlideBody" class="text-sm text-slate-200 mt-3 whitespace-pre-line leading-relaxed"></p>
+            </div>
+            <div class="flex items-center justify-between pt-4 mt-4 border-t border-slate-700">
+              <button type="button" onclick="prevSlide()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold cursor-pointer">← Previous</button>
+              <button type="button" onclick="nextSlide()" class="px-3 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold cursor-pointer">Next →</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="pptLinkView" class="hidden space-y-3">
+          <div class="flex items-center justify-between gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <span id="pptLinkLabel" class="text-xs font-semibold text-slate-700 truncate">Presentation Link</span>
+            <a id="pptExternalLink" href="#" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white text-xs font-semibold shrink-0">
+              Open Link
+            </a>
+          </div>
+          <iframe id="pptIframe" class="w-full h-[46vh] rounded-xl border border-slate-200 bg-slate-100" src=""></iframe>
+        </div>
+
+        <div id="pptEmptyState" class="text-center py-8 text-slate-500">
+          <p class="text-3xl mb-2">📊</p>
+          <p class="text-sm font-semibold text-slate-700">No presentation attached to this lesson yet.</p>
+          <p class="text-xs mt-1">Section Officers can add a slide link or build quick slides below.</p>
+        </div>
+
+        <div id="pptAdminControls" class="hidden border-t border-slate-200 pt-4 space-y-4">
+          <p class="text-xs font-bol
